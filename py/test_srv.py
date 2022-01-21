@@ -11,8 +11,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-HTTP_PORT = os.getenv('HTTP_PORT')
-WG_PORT = os.getenv('WG_PORT')
+HTTP_PORT = int(os.getenv('HTTP_PORT'))
+WG_PORT = int(os.getenv('WG_PORT'))
 PUBLIC_IP = os.getenv('SERVER_IP')
 WG_INTERFACE = 'wg-srv'
 IP_FORMAT = '10.0.0.{}'
