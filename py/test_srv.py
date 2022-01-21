@@ -69,14 +69,18 @@ def run(server_class=HTTPServer, handler_class=VpnServer):
     httpd = server_class(server_address, handler_class)
     httpd.serve_forever()
 
+def execute_verbose(command):
+    print(command)
+    os.system(command)
+
 def setup_forwarding_rules():
-    os.system("iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT")
-    os.system("iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT")
-    os.system("iptables -A INPUT -p udp -m udp --dport {} -m conntrack --ctstate NEW -j ACCEPT".format(WG_PORT))
-    os.system("iptables -A INPUT -s {} -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT".format(IP_FORMAT.format('0/24')))
-    os.system("iptables -A INPUT -s {} -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT".format(IP_FORMAT.format('0/24')))
-    os.system("iptables -A FORWARD -i {} -o {} -m conntrack --ctstate NEW -j ACCEPT".format(WG_INTERFACE, WG_INTERFACE))
-    os.system("iptables -t nat -A POSTROUTING -s {} -o {} -j MASQUERADE".format(IP_FORMAT.format('0/24'), INTERNET_INTERFACE))
+    execute_verbose("iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT")
+    execute_verbose("iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT")
+    execute_verbose("iptables -A INPUT -p udp -m udp --dport {} -m conntrack --ctstate NEW -j ACCEPT".format(WG_PORT))
+    execute_verbose("iptables -A INPUT -s {} -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT".format(IP_FORMAT.format('0/24')))
+    execute_verbose("iptables -A INPUT -s {} -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT".format(IP_FORMAT.format('0/24')))
+    execute_verbose("iptables -A FORWARD -i {} -o {} -m conntrack --ctstate NEW -j ACCEPT".format(WG_INTERFACE, WG_INTERFACE))
+    execute_verbose("iptables -t nat -A POSTROUTING -s {} -o {} -j MASQUERADE".format(IP_FORMAT.format('0/24'), INTERNET_INTERFACE))
 
 if __name__ == '__main__':
     wg.delete_device(WG_INTERFACE)
