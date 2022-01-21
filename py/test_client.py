@@ -20,5 +20,6 @@ response = requests.post(url=HTTP_FULL, json=data).json()
 srv_key = wg.key_from_base64(response['public_key'])
 local_ip = response['ip']
 
+wg.delete_device('wg-client')
 wg.setup_client_connection('wg-client', private, "{}/24".format(local_ip), srv_key, IP_ADDR, WG_PORT)
 wg.enable_device('wg-client')

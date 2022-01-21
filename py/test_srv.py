@@ -62,6 +62,8 @@ def run(server_class=HTTPServer, handler_class=VpnServer):
 
 
 if __name__ == '__main__':
+    wg.delete_device(WG_INTERFACE)
+
     wg.create_server(WG_INTERFACE, WG_PORT, private, IP_FORMAT.format('1/24'))
     wg.enable_device(WG_INTERFACE)
     

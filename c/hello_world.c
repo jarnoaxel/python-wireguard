@@ -173,12 +173,13 @@ void add_client_peer(char *device_name, unsigned char *public_key, char *ip_addr
     wg_set_device(device);
 }
 
-void delete_device(char *device_name)
+int delete_device(char *device_name)
 {
     if (wg_del_device(device_name) < 0) {
         perror("Unable to delete device");
-        exit(1);
+        return 1;
     }
+    return 0;
 }
 
 void list_devices(void)
