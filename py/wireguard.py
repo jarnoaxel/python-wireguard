@@ -1,5 +1,6 @@
 from ctypes import *
 import re
+import os
 
 c_library = CDLL('../c/library.so')
 
@@ -15,17 +16,28 @@ def key_pair():
     c_library.generate_public_key(private, public)
     return private, public
 
-def create_device(name, port, private_key, local_ip):
+def create_server(name, port, private_key, local_ip):
     if (valid_interface(name)):
         c_library.add_device(name.encode(), c_ushort(port), private_key)
-        exec("ip a add dev {} {}".format(name, local_ip))
+        os.system("ip a add dev {} {}".format(name, local_ip))
     else:
         print("invalid device name '{}'".format(device))
 
-def add_peer(device_name, public_key, address, port):
+def create_client(name, private_key, local_ip):
+    if (valid_interface(name)):
+        c_library.add_device(name.encode(), c_ushort(port), private_key)
+        os.system("ip a add dev {} {}".format(name, local_ip))
+    else:
+        print("invalid device name '{}'".format(device))
+
+def client_add_peer(device_name, public_key, address, port):
     c_library.add_server_peer(device_name.encode(), public_key, address.encode(), c_ushort(port))
 
-def add_client(device_name, public_key, address):
+def setup_client_connection(device_name, own_private, local_ip, srv_public, dest_address, dest_port):
+    create_client(device_name, own_private, local_ip)
+    client_add_peer(device_name, srv_public, dest_address, dest_port)
+
+def server_add_peer(device_name, public_key, address):
     c_library.add_client_peer(device_name.encode(), public_key, address.encode())
 
 def delete_device(name):
@@ -49,6 +61,6 @@ def key_from_base64(base64):
 
 def enable_device(device):
     if (valid_interface(device)):
-        exec("ip link set up {}".format(device))
+        os.system("ip link set up {}".format(device))
     else:
         print("invalid device '{}'".format(device))

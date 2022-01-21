@@ -40,11 +40,31 @@ void print_key(unsigned char *key)
     printf("Key: %s\n", readable);
 }
 
-void add_device(char *device_name, uint16_t port, wg_key private_key)
+void add_server_device(char *device_name, uint16_t port, wg_key private_key)
 {
     wg_device new_device = {
         .flags = WGDEVICE_HAS_PRIVATE_KEY | WGDEVICE_HAS_LISTEN_PORT,
         .listen_port = port,
+    };
+
+    strcpy(new_device.name, device_name);
+    memcpy(new_device.private_key, private_key, sizeof(new_device.private_key));
+
+    if (wg_add_device(new_device.name) < 0) {
+        perror("Unable to add device");
+        exit(1);
+    }
+
+    if (wg_set_device(&new_device) < 0) {
+        perror("Unable to set device");
+        exit(1);
+    }
+}
+
+void add_client_device(char *device_name, wg_key private_key)
+{
+    wg_device new_device = {
+        .flags = WGDEVICE_HAS_PRIVATE_KEY,
     };
 
     strcpy(new_device.name, device_name);
@@ -152,36 +172,6 @@ void add_client_peer(char *device_name, unsigned char *public_key, char *ip_addr
 
     wg_set_device(device);
 }
-/*
-void add_client_peer(char *device_name, unsigned char *public_key, char *ip_address, uint16_t port)
-{
-
-
-    wg_peer new_peer = {
-        .flags = WGPEER_HAS_PUBLIC_KEY | WGPEER_REPLACE_ALLOWEDIPS
-    };
-
-    //memcpy(new_peer.endpoint.addr4, dest_addr, sizeof(new_peer.endpoint.addr4));
-    new_peer.endpoint.addr4 = dest_addr;
-    memcpy(new_peer.public_key, public_key, sizeof(new_peer.public_key));
-    wg_device *device;
-    if(wg_get_device(&device, device_name) < 0) {
-        perror("Unable to get device");
-        exit(1);
-    }
-    wg_peer *peer;
-    if (device->last_peer == NULL) {
-        device->first_peer = &new_peer;
-        device->last_peer = &new_peer;
-    } else {
-        peer = device->last_peer;
-        peer->next_peer = &new_peer;
-        device->last_peer = &new_peer;
-    }
-
-    wg_set_device(device);
-}
-*/
 
 void delete_device(char *device_name)
 {
