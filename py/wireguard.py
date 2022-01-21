@@ -18,14 +18,14 @@ def key_pair():
 
 def create_server(name, port, private_key, local_ip):
     if (valid_interface(name)):
-        c_library.add_device(name.encode(), c_ushort(port), private_key)
+        c_library.add_server_device(name.encode(), c_ushort(port), private_key)
         os.system("ip a add dev {} {}".format(name, local_ip))
     else:
         print("invalid device name '{}'".format(device))
 
 def create_client(name, private_key, local_ip):
     if (valid_interface(name)):
-        c_library.add_device(name.encode(), c_ushort(port), private_key)
+        c_library.add_client_device(name.encode(), private_key)
         os.system("ip a add dev {} {}".format(name, local_ip))
     else:
         print("invalid device name '{}'".format(device))
