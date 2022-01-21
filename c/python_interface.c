@@ -106,12 +106,9 @@ void add_server_peer(char *device_name, unsigned char *public_key, char *ip_addr
     };
 
     new_peer.endpoint.addr4 = dest_addr;
-    printf("set dest_addr\n");
     new_peer.first_allowedip = &allowed_ip;
     new_peer.last_allowedip = &allowed_ip;
-    printf("set first & last allowedip\n");
     memcpy(new_peer.public_key, public_key, sizeof(new_peer.public_key));
-    printf("set public key\n");
     wg_device *device;
     if(wg_get_device(&device, device_name) < 0) {
         perror("Unable to get device");
@@ -126,7 +123,6 @@ void add_server_peer(char *device_name, unsigned char *public_key, char *ip_addr
         peer->next_peer = &new_peer;
         device->last_peer = &new_peer;
     }
-    printf("almost done\n");
 
     wg_set_device(device);
 }
@@ -151,9 +147,7 @@ void add_client_peer(char *device_name, unsigned char *public_key, char *ip_addr
 
     new_peer.first_allowedip = &allowed_ip;
     new_peer.last_allowedip = &allowed_ip;
-    printf("set first & last allowedip\n");
     memcpy(new_peer.public_key, public_key, sizeof(new_peer.public_key));
-    printf("set public key\n");
     wg_device *device;
     if(wg_get_device(&device, device_name) < 0) {
         perror("Unable to get device");
@@ -168,7 +162,6 @@ void add_client_peer(char *device_name, unsigned char *public_key, char *ip_addr
         peer->next_peer = &new_peer;
         device->last_peer = &new_peer;
     }
-    printf("almost done\n");
 
     wg_set_device(device);
 }

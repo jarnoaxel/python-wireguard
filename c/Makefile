@@ -7,9 +7,9 @@ all: library.so
 clean:
 	$(RM) *.o *.so
 
-library.so: hello_world.o wireguard.o
+library.so: python_interface.o wireguard.o
 	$(LINK.c) -shared $^ -o $@
 
-hello_world.o: hello_world.c
+python_interface.o: python_interface.c
 
 wireguard.o: wireguard.c wireguard.h
