@@ -7,7 +7,7 @@ import os
 import wireguard as wg
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from dotenv import load_dotenv()
+from dotenv import load_dotenv
 
 load_dotenv()
 
