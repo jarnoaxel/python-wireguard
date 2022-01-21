@@ -3,12 +3,17 @@
 # This is purely an example server, not to be used in production!
 # See 'test_client.py' for connection instructions.
 
+import os
 import wireguard as wg
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+from dotenv import load_dotenv()
 
-HTTP_PORT = 8888
-WG_PORT = 1234
+load_dotenv()
+
+HTTP_PORT = os.getenv('HTTP_PORT')
+WG_PORT = os.getenv('WG_PORT')
+PUBLIC_IP = os.getenv('SERVER_IP')
 WG_INTERFACE = 'wg-srv'
 IP_FORMAT = '10.0.0.{}'
 
@@ -50,7 +55,9 @@ class VpnServer(BaseHTTPRequestHandler):
         
         response = {
             'public_key': wg.key_to_base64(public),
-            'ip': ip_formatted
+            'ip': ip_formatted,
+            'vpn_ip': PUBLIC_IP,
+            'vpn_port' WG_PORT,
         }
 
         self.wfile.write(json.dumps(response).encode())
