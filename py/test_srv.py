@@ -83,5 +83,6 @@ if __name__ == '__main__':
 
     wg.create_server(WG_INTERFACE, WG_PORT, private, IP_FORMAT.format('1/24'))
     wg.enable_device(WG_INTERFACE)
+    setup_forwarding_rules()
     
     run()
