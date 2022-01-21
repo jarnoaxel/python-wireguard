@@ -57,7 +57,7 @@ class VpnServer(BaseHTTPRequestHandler):
             'public_key': wg.key_to_base64(public),
             'ip': ip_formatted,
             'vpn_ip': PUBLIC_IP,
-            'vpn_port' WG_PORT,
+            'vpn_port': WG_PORT,
         }
 
         self.wfile.write(json.dumps(response).encode())
