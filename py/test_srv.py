@@ -77,10 +77,10 @@ def setup_forwarding_rules():
     execute_verbose("iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT")
     execute_verbose("iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT")
     execute_verbose("iptables -A INPUT -p udp -m udp --dport {} -m conntrack --ctstate NEW -j ACCEPT".format(WG_PORT))
-    execute_verbose("iptables -A INPUT -s {} -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT".format(IP_FORMAT.format('0/24')))
-    execute_verbose("iptables -A INPUT -s {} -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT".format(IP_FORMAT.format('0/24')))
+    execute_verbose("iptables -A INPUT -s {} -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT".format(IP_FORMAT.format('1/24')))
+    execute_verbose("iptables -A INPUT -s {} -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT".format(IP_FORMAT.format('1/24')))
     execute_verbose("iptables -A FORWARD -i {} -o {} -m conntrack --ctstate NEW -j ACCEPT".format(WG_INTERFACE, WG_INTERFACE))
-    execute_verbose("iptables -t nat -A POSTROUTING -s {} -o {} -j MASQUERADE".format(IP_FORMAT.format('0/24'), INTERNET_INTERFACE))
+    execute_verbose("iptables -t nat -A POSTROUTING -s {} -o {} -j MASQUERADE".format(IP_FORMAT.format('1/24'), INTERNET_INTERFACE))
 
 if __name__ == '__main__':
     wg.delete_device(WG_INTERFACE)
