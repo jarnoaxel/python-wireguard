@@ -10,7 +10,7 @@ import json
 HTTP_PORT = 8888
 WG_PORT = 1234
 WG_INTERFACE = 'wg-srv'
-IP_FORMAT = '10.0.0.{}/24'
+IP_FORMAT = '10.0.0.{}'
 
 private, public = wg.key_pair()
 public_string = wg.key_to_base64(public)
@@ -62,7 +62,7 @@ def run(server_class=HTTPServer, handler_class=VpnServer):
 
 
 if __name__ == '__main__':
-    wg.create_server(WG_INTERFACE, WG_PORT, private, IP_FORMAT.format(1))
+    wg.create_server(WG_INTERFACE, WG_PORT, private, IP_FORMAT.format('1/24'))
     wg.enable_device(WG_INTERFACE)
     
     run()
