@@ -1,8 +1,17 @@
 from setuptools import setup
+from pathlib import Path
+import os
+
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text()
+
+version = os.environ.get('RELEASE_VERSION')
 
 setup(name='python_wireguard',
-      version='0.1.0',
+      version=version,
       description='A python wrapper for controlling Wireguard',
+      long_description=long_description,
+      long_description_content_type="text/markdown",
       url='',
       author='jarnoaxel',
       license='MIT',
