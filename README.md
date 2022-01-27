@@ -45,4 +45,5 @@ wg.server_add_peer("wg-srv", client_public, "10.0.0.2")
 ### Client
 ```python
 wg.setup_client_connection("wg-client", private, "10.0.0.2/24", srv_public, "public ip of VPN server", 12345)
+wg.enable_device("wg-client")
 ```
