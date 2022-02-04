@@ -1,6 +1,9 @@
-from setuptools import setup
+'''
+Used for building the python_wireguard package.
+'''
 from pathlib import Path
 import os
+from setuptools import setup
 
 this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
