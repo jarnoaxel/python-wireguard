@@ -7,3 +7,5 @@ from .wireguard import valid_interface, empty_key, key_pair, create_server, crea
 from .key import Key
 from .client import Client
 from .server_connection import ServerConnection
+from .server import Server
+from .client_connection import ClientConnection
