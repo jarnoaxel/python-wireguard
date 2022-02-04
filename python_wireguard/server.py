@@ -24,7 +24,7 @@ class Server:
         '''
         Create the network interface belonging to this wg server.
         '''
-        wg.create_server(self.interface_name, self.port, self.key, self.local_ip)
+        wg.create_server(self.interface_name, self.port, self.key.as_bytes(), self.local_ip)
         self.interface_created = True
 
     def delete_interface(self):
@@ -39,7 +39,7 @@ class Server:
         Add a new client to this server.
         '''
         wg.server_add_peer(self.interface_name,
-                           client_connection.get_key(),
+                           client_connection.get_key().as_bytes(),
                            client_connection.get_ip())
 
     def enable(self):
