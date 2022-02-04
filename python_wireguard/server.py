@@ -1,7 +1,7 @@
 '''
 Contains a class representing a server-side Wireguard connection.
 '''
-import python_wireguard as wg
+from .wireguard import valid_interface, create_server, delete_device, server_add_peer, enable_device
 from .key import Key
 
 class Server:
@@ -9,7 +9,7 @@ class Server:
     This is a server-side Wireguard connection.
     '''
     def __init__(self, interface_name, key, local_ip, port):
-        if not wg.valid_interface(interface_name):
+        if not valid_interface(interface_name):
             raise ValueError(f"Invalid interface name {interface_name}")
         if not isinstance(key, Key):
             raise ValueError("Key should be an instance of python_wireguard.Key")
@@ -24,21 +24,21 @@ class Server:
         '''
         Create the network interface belonging to this wg server.
         '''
-        wg.create_server(self.interface_name, self.port, self.key.as_bytes(), self.local_ip)
+        create_server(self.interface_name, self.port, self.key.as_bytes(), self.local_ip)
         self.interface_created = True
 
     def delete_interface(self):
         '''
         Deletes the network interface of this server.
         '''
-        wg.delete_device(self.interface_name)
+        delete_device(self.interface_name)
         self.interface_created = False
 
     def add_client(self, client_connection):
         '''
         Add a new client to this server.
         '''
-        wg.server_add_peer(self.interface_name,
+        server_add_peer(self.interface_name,
                            client_connection.get_key().as_bytes(),
                            client_connection.get_ip())
 
@@ -48,4 +48,4 @@ class Server:
         '''
         if not self.interface_created:
             self.create_interface()
-        wg.enable_device(self.interface_name)
+        enable_device(self.interface_name)
