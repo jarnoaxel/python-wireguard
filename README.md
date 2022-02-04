@@ -18,29 +18,38 @@ This package was designed with a client/server infrastructure in mind. This diff
 Both the client and the server need a key pair.
 
 ```python
-import python_wireguard as wg
-private, public = wg.key_pair()
-```
-
-By default the key is an array of bytes. In order to make it more usable, you can convert it to a base64 string:
-
-```python
-string = wg.key_to_base64(public)
-print(string)
+from python_wireguard import Key
+private, public = Key.key_pair()
+public
+# <python_wireguard.Key object: 5TxYUa403l9A9yEVMyIsSZwae4C7497IT8uaMYEdLHQ=>
+print(public)
+# 5TxYUa403l9A9yEVMyIsSZwae4C7497IT8uaMYEdLHQ=
 ```
 
 Creating a key from a base64 string is also possible, which is useful for creating one for the other device's public key:
 ```python
-srv_public = wg.key_from_base64("some string containing a base64 key")
+from python_wireguard import Key
+srv_public = Key("some string containing a base64 key")
 ```
 
 ### Server
 ```python
-wg.create_server("wg-srv", 12345, private, "10.0.0.1/24")
-wg.enable_device("wg-srv")
-wg.server_add_peer("wg-srv", client_public, "10.0.0.2")
-
+from python_wireguard import Server, ClientConnection
+server = Server("wg-srv", private, 12345, "10.0.0.1/24")
+server.enable()
 ```
+You should now be able to see connection on your machine using the 'normal' wireguard cli:
+```shell
+sudo wg
+```
+Example output:
+```
+interface: wg-srv
+  public key: Z9mHJ0apfgTvULpV3t9jpzyjmABSts1weE2jPiee8w8=
+  private key: (hidden)
+  listening port: 12345
+```
+#### Add a client
 
 ### Client
 ```python
