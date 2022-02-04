@@ -1,6 +1,10 @@
 # Python Wireguard interface
 Library for controlling Wireguard using python.
 
+![security badge](https://github.com/jarnoaxel/python-wireguard/actions/workflows/codeql-analysis.yml/badge.svg)
+![linter badge](https://github.com/jarnoaxel/python-wireguard/actions/workflows/pylint.yml/badge.svg)
+![package badge](https://github.com/jarnoaxel/python-wireguard/actions/workflows/python-publish.yml/badge.svg)
+
 ## Installation
 To install this package, use pip:
 
