@@ -33,6 +33,8 @@ srv_public = Key("some string containing a base64 key")
 ```
 
 ### Server
+This section explains setting up the connection on the server machine.
+
 ```python
 from python_wireguard import Server, ClientConnection
 server = Server("wg-srv", private, 12345, "10.0.0.1/24")
@@ -50,9 +52,35 @@ interface: wg-srv
   listening port: 12345
 ```
 #### Add a client
+For adding a client connection, you first need to create a `ClientConnection` object:
+```python
+from python_wireguard import ClientConnection, Key
+
+client_key = Key("base64 string received from client (public key)")
+client_ip = "10.0.0.2" # The 'local' ip address that the client will be assigned.
+conn = ClientConnection(client_key, client_ip)
+```
+
+You can now add this client to the server:
+```python
+server.add_client(conn)
+```
 
 ### Client
+This section explains setting up the connection on a client machine. This needs to be a different machine than the server machine.
 ```python
-wg.setup_client_connection("wg-client", private, "10.0.0.2/24", srv_public, "public ip of VPN server", 12345)
-wg.enable_device("wg-client")
+from python_wireguard import Client, ServerConnection, Key
+
+local_ip = "10.0.0.2/24" # CIDR block received from server.
+
+client = Client('wg-client', private, local_ip)
+
+srv_key = Key("base64 string received from the server (public key)")
+endpoint = "public ip address of the server"
+port = 12345 # The port on which the server has been set up to listen
+
+server_conn = ServerConnection(srv_key, endpoint, port)
+
+client.set_server(server_conn)
+client.connect()
 ```
