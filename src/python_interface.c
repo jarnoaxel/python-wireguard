@@ -33,13 +33,6 @@ void key_from_string(char *string, wg_key key)
     wg_key_from_base64(key, string);
 }
 
-void print_key(unsigned char *key)
-{
-    wg_key_b64_string readable;
-    wg_key_to_base64(readable, key);
-    printf("Key: %s\n", readable);
-}
-
 void add_server_device(char *device_name, uint16_t port, wg_key private_key)
 {
     wg_device new_device = {
