@@ -1,6 +1,5 @@
 from context import wireguard
 import os
-import io
 from wurlitzer import pipes
 
 
