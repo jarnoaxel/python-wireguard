@@ -56,25 +56,6 @@ def client_add_peer(device_name, public_key, address, port):
     '''
     c_library.add_server_peer(device_name.encode(), public_key, address.encode(), c_ushort(port))
 
-def setup_client_connection(device_name, keys, local_ip,
-                            dest_address, dest_port):
-    '''
-    Connect to a Wireguard server as a client machine.
-    :device_name:   The name of the interface that will be added.
-    :local_ip:      The local IP you will use. Should be provided by the server.
-    :keys:          The keys used for the connection:
-                    {
-                        'client': The private key of this client.
-                        'server': The public key of the server to connect to.
-                    }
-    :dest_address:  The endpoint Wireguard will connect to.
-    :dest_port:     The port used by the Wireguard server.
-    '''
-    own_private = keys['client']
-    srv_public = keys['server']
-    create_client(device_name, own_private, local_ip)
-    client_add_peer(device_name, srv_public, dest_address, dest_port)
-
 def server_add_peer(device_name, public_key, local_ip):
     '''
     Add a client
@@ -92,12 +73,6 @@ def list_devices():
     Print a list of all Wireguard network devices.
     '''
     c_library.list_devices()
-
-def print_key(key):
-    '''
-    Print the readable version of a string.
-    '''
-    c_library.print_key(key)
 
 def key_to_base64(key):
     '''
