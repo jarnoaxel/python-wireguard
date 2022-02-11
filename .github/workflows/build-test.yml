@@ -29,7 +29,7 @@ jobs:
         if [ -f requirements.txt ]; then sudo pip install -r requirements.txt; fi
     - name: Test with pytest
       run: |
-        sudo pytest --junit-xml pytest.xml
+        sudo pytest --junit-xml pytest.xml --cov-report term-missing --cov-fail-under=90 --cov=python_wireguard tests/
     - name: Upload Unit Test Results
       if: always()
       uses: actions/upload-artifact@v2
