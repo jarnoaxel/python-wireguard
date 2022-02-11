@@ -1,2 +1,3 @@
 pytest
 wurlitzer
+pytest-cov
