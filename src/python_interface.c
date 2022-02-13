@@ -40,7 +40,7 @@ void add_server_device(char *device_name, uint16_t port, wg_key private_key)
         .listen_port = port,
     };
 
-    strcpy(new_device.name, device_name);
+    snprintf(new_device.name, IFNAMSIZ, "%s", device_name);
     memcpy(new_device.private_key, private_key, sizeof(new_device.private_key));
 
     if (wg_add_device(new_device.name) < 0) {
@@ -60,7 +60,7 @@ void add_client_device(char *device_name, wg_key private_key)
         .flags = WGDEVICE_HAS_PRIVATE_KEY,
     };
 
-    strcpy(new_device.name, device_name);
+    snprintf(new_device.name, IFNAMSIZ, "%s", device_name);
     memcpy(new_device.private_key, private_key, sizeof(new_device.private_key));
 
     if (wg_add_device(new_device.name) < 0) {
