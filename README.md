@@ -42,7 +42,7 @@ This section explains setting up the connection on the server machine.
 
 ```python
 from python_wireguard import Server, ClientConnection
-server = Server("wg-srv", private, 12345, "10.0.0.1/24")
+server = Server("wg-srv", private, "10.0.0.1/24", 12345)
 server.enable()
 ```
 You should now be able to see connection on your machine using the 'normal' wireguard cli:
